@@ -1,0 +1,24 @@
+name: Deploy on Push
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
